@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.wasteai">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/waste_ai_small"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MyHistoryActivity"></activity>
+        <activity android:name=".AchievmentsActivity" />
+        <activity android:name=".TakeimageActivity" />
+        <activity android:name=".Admin_Home_Activity" />
+        <activity android:name=".RadiusChartActivity2" />
+        <activity android:name=".Model.ScatterChartActivity" />
+        <activity android:name=".LineChartActivity" />
+        <activity android:name=".CivicBodiesActivity" />
+        <activity android:name=".ComplaintActivity" />
+        <activity android:name=".BarChartActivity" />
+        <activity android:name=".VisualsActivity" />
+        <activity android:name=".CaptureActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".GraphActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

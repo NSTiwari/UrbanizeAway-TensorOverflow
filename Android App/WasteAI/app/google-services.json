@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "396828542394",
+    "firebase_url": "https://wasteai.firebaseio.com",
+    "project_id": "wasteai",
+    "storage_bucket": "wasteai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396828542394:android:878e7129315ae745f94983",
+        "android_client_info": {
+          "package_name": "com.example.wasteai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396828542394-684lbdfo8asj9if5rr6s11c186rj8s7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wasteai",
+            "certificate_hash": "c74e9ef9cf479e35c337c7b8a0bc7f3b67ae127d"
+          }
+        },
+        {
+          "client_id": "396828542394-5022lua60qvni6h7d5s97hukr1d0u2ej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaPZKM9u57k6nWvqXjXcsLCeak9lCrN-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396828542394-5022lua60qvni6h7d5s97hukr1d0u2ej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
