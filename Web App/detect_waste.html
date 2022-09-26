@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="theme-color" content="#000000" />
+    
+    <title>Object Detection</title>
+    <style type="text/css">
+      canvas {
+          /*padding: 0;
+          margin: auto;
+          display: block;
+          width: 800px;
+          height: 600px;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;*/
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@cloud-annotations/models"></script>
+  </head>
+  <body bgcolor="#fff">
+    <div class="container1 " style="float: left">
+  <a href="index.html" class="btn">BACK</a>
+</div>
+
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+
+    <!-- <p>Canvas:</p> -->
+      <canvas id="my-canvas" width="480" height="320"></canvas>
+      <canvas id="my-canvas2" width="500" height="320"></canvas>
+    
+    <script>
+    
+          const myCanvas = document.getElementById('my-canvas');
+          var style = myCanvas.style;
+          // style.marginLeft = "auto";
+          // style.marginRight = "auto";
+          style.border = "2px solid #fff";
+          var parentStyle = myCanvas.parentElement.style;
+          parentStyle.textAlign = "center";
+          parentStyle.width = "100%";
+
+          const myContext = myCanvas.getContext('2d');
+          myContext.strokeStyle = '#f00';
+          myContext.lineWidth = 5;
+          const img = new Image();
+          img.src = 'images/test5.jpg';
+
+          img.onload = () => {
+            myContext.drawImage(img, 0, 0);
+          }
+
+          var canvas2 = document.getElementById("my-canvas2");
+          var ctx2 = canvas2.getContext("2d");
+          ctx2.beginPath();
+          ctx2.moveTo(0,0);
+          ctx2.clearRect(0, 0, ctx2.canvas.width, ctx2.canvas.height);
+          ctx2.save();
+          // ctx2.lineTo(ctx2.canvas.width,ctx2.canvas.height);
+          ctx2.font = "30px Arial";
+          ctx2.textAlign = "left";
+          ctx2.strokeStyle = 'red';
+
+          models.load('/model_web') 
+            .then(model => model.detect(img))
+            .then(predictions => {
+              console.log(predictions)
+
+                predictions.forEach((prediction) => {
+                  const x = prediction.bbox[0]
+                  const y = prediction.bbox[1]
+                  const width = prediction.bbox[2]
+                  const height = prediction.bbox[3]
+                  // const lab = prediction.label
+
+                  myContext.strokeRect(
+                    Math.round(x),
+                    Math.round(y),
+                    Math.round(width),
+                    Math.round(height)
+                  )
+
+                  console.log(Math.round(x))
+                  console.log(Math.round(y))
+                  console.log(Math.round(width))
+                  console.log(Math.round(height))
+                  const len = Math.round(width)-Math.round(x)
+                  const hei = Math.round(height)-Math.round(y)
+                  const area = len*hei
+                  const calib = area*0.0001
+                  console.log(len)
+                  console.log(hei)
+
+                  myContext.fillStyle = "#fff";
+                  const textWidth = myContext.measureText(prediction.class).width;
+                  const font = "16px sans-serif";
+
+                  const textHeight = parseInt(font, 10); // base 10
+                  myContext.fillRect(x, y, textWidth + 10, textHeight + 4);
+
+                  myContext.fillStyle = "#000000";
+                  myContext.fillText(prediction.class, x, y+10);
+
+                  ctx2.fillStyle = "#283C99"
+                  ctx2.fillText("Location            : Mumbai",100,130)
+                  ctx2.fillText("Latitude             : 19.090123",100,160)
+                  ctx2.fillText("Longitude          : 72.9101299",100,190)
+                  ctx2.fillText("Predicted Class : "+prediction.class,100,220)
+                  ctx2.fillText("Waste Quantity  : "+calib+"sq m",100,250)
+                  ctx2.stroke();
+
+                });
+
+                
+            })
+      
+    </script>
+
+    
+
+    <div id="root"></div>
+  </body>
+</html>

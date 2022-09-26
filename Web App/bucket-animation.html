@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bucket Animation</title>
+	<style type="text/css">
+		body {
+		    background-color:FFF9C4;
+		}
+		canvas {
+		    border:1px solid white;
+	        /*padding: 0;
+	        margin: auto;
+	        display: block;
+	        width: 800px;
+	        height: 600px;
+	        position: absolute;
+	        top: 0;
+	        bottom: 0;
+	        left: 0;
+	        right: 0;*/
+	}
+	        .container{
+	        	float: left;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container"> <a href="index.html" class="btn">BACK</a></div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>
+<script src="firebaseauth.js"></script>
+
+	<canvas id="canvas" width=350 height=220></canvas>
+	<canvas id="canvas2" width=500 height=300></canvas>
+
+	<script type="text/javascript">
+		
+		var distanceRef = firebase.database().ref("/GarbageLevel/distance");
+		distanceRef.on('value', (snapshot) => {
+			var distData = snapshot.val();
+			console.log(distData)
+			drawCanvas(distData);
+
+		});
+		
+		function drawCanvas(distData){
+
+			var canvas = document.getElementById("canvas");
+			var ctx = canvas.getContext("2d");
+			var style = canvas.style;
+			style.marginLeft = "auto";
+			style.marginRight = "auto";
+			var parentStyle = canvas.parentElement.style;
+			parentStyle.textAlign = "center";
+			parentStyle.width = "100%";
+			var cw = canvas.width;
+			var ch = canvas.height;
+			ctx.lineCap = "round";
+
+			var canvas2 = document.getElementById("canvas2");
+			var ctx2 = canvas2.getContext("2d");
+
+			
+			var stat = "Waiting";
+			var y = ch;
+			var pointer = distData; //pointer value that user inputs
+			var lev = 20+200-(pointer*2) // calibration of the animation and user input value
+			// var lev = 100-(pointer)
+			// const a = 200-lev
+
+			// let multiplier = 200/100
+			// let decider = -distData*multiplier
+
+			if(distData>74 && distData<=100){
+				stat = "High"
+			}else if(distData>49 && distData<=74){
+				stat = "Medium"
+			}else if(distData>24 && distData<=49){
+				stat = "Low"
+			}
+			else if(distData>0 && distData<=24){
+				stat = "Too Low"
+			}
+			else if(distData<=0){
+				stat = "Empty"
+			}
+			ctx2.beginPath();
+			ctx2.moveTo(0,0);
+			ctx2.clearRect(0, 0, ctx2.canvas.width, ctx2.canvas.height);
+			ctx2.save();
+			// ctx2.lineTo(ctx2.canvas.width,ctx2.canvas.height);
+			ctx2.font = "30px Arial";
+			ctx2.textAlign = "left";
+			ctx2.strokeStyle = 'red';
+			ctx2.fillText("Location       : Mumbai",100,130)
+			ctx2.fillText("Latitude        : 19.090123",100,160)
+			ctx2.fillText("Longitude     : 72.9101299",100,190)
+			ctx2.fillText("Waste Level : "+distData+" % Filled",100,220)
+			ctx2.fillText("Status           : "+stat,100,250)
+			ctx2.stroke();
+			
+
+			// var drawingColor = "#0092f9";
+			animate();
+
+			function animate() {
+			    if (y > lev) {
+			        requestAnimationFrame(animate);
+			    }
+
+			    ctx.clearRect(0, 0, cw, ch);
+			    ctx.save();
+			    drawContainer();
+			    ctx.save();
+			    ctx.clip();	
+
+			    if(y>=170){
+			    	var drawingColor = "#C6FF00";
+			    }else if (y>=120 && y < 170) {
+			    	var drawingColor = "#76FF03";
+			    }else if (y>=70 && y < 120) {
+			    	var drawingColor = "#FFC107";
+			    }else if(y>=20 && y<70){
+			    	var drawingColor = "#f44336";
+			    }
+			    drawLiquid(drawingColor);
+			    ctx.restore();
+			    ctx.restore();
+			    y--;
+			}
+
+			function drawLiquid(drawingColor) {
+			    ctx.beginPath();
+			    ctx.moveTo(0, y);
+			    for (var x = 0; x < cw; x += 20) {
+			        ctx.quadraticCurveTo(x, y, x, y);
+			    } //animate the level rise
+			    ctx.lineTo(cw, ch);
+			    ctx.lineTo(0, ch);
+			    ctx.closePath();
+			    ctx.fillStyle = drawingColor;
+			    ctx.fill();
+			}
+
+			function drawContainer() {
+			    	ctx.beginPath();
+			    	//Create the container
+			        ctx.moveTo(20, 20);
+			        ctx.lineTo(70, 220);
+			        ctx.lineTo(160, 220);
+			        ctx.lineTo(210, 20);
+			        ctx.lineTo(20, 20);
+			        // ctx.closePath();
+			    	ctx.lineWidth = 2;
+			    	ctx.stroke();
+
+			    	// Create the 'high' level indicator
+			    	ctx.moveTo(200, 70);
+			    	ctx.lineTo(230,70);
+			    	ctx.stroke();
+			    	ctx.strokeRect(230,70,70,20);
+			    	ctx.fillStyle = "#000000";
+			    	ctx.fillText("High ~ 75%", 235,80);
+
+			    	// Create the 'medium' level indicator
+			    	ctx.moveTo(190, 120);
+			    	ctx.lineTo(230,120);
+			    	ctx.stroke();
+			    	ctx.strokeRect(230,120,70,20);
+			    	ctx.fillStyle = "#000000";
+			    	ctx.fillText("Medium ~ 50%", 235,130);
+
+			    	// Create the 'low' level indicator
+			    	ctx.moveTo(180, 170);
+			    	ctx.lineTo(230,170);
+			    	ctx.stroke();
+			    	ctx.strokeRect(230,170,70,20);
+			    	ctx.fillStyle = "#000000";
+			    	ctx.fillText("Low ~ 25%", 235,180);
+			    
+			}
+		}
+
+	</script>
+	
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 <title>Query</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/complain.css">
+	<style type="text/css"></style>
+<body bgcolor="#283C99">
+
+<script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>
+<script src="firebaseauth.js"></script>
+<!-- 
+<div class="main">
+	<div class="card">
+		<div class="title">
+	 		<h1>Prathamesh Patil</h1>
+		</div>
+		<div class="des">
+	 		<p>This is to bring your attention to the growing garbage predicament in my locality.</p>
+			<button>Address this Query</button>
+		</div>
+	</div>
+</div>
+ -->
+<div class="main">
+	<!-- <div class="card">
+		<div class="title">
+		</div>
+		<div class="des"><p></p><p></p>
+		</div>
+	</div> -->
+</div>
+
+<script type="text/javascript">
+
+function generateComplaints(){
+	const maintag = document.querySelector(".main");
+	maintag.innerHTML = ""
+	var complaints = firebase.database().ref('ComplaintsData');
+	complaints.on('value', function(snapshot){
+		maintag.innerHTML = ""
+		snapshot.forEach(function(childSnaphot){
+			var childUserData = childSnaphot.val();
+			console.log(childUserData.queryID);
+			
+			const cardtag = document.createElement("div")
+			cardtag.classList.add("card")
+
+			const titletag = document.createElement("div")
+			titletag.classList.add("title")
+			cardtag.appendChild(titletag)
+
+			const h1 = document.createElement("h1")
+			const userid = document.createTextNode("Query ID: "+ childUserData.queryID)
+			h1.appendChild(userid)
+			titletag.appendChild(h1)
+
+			const regdtag = document.createElement("div")
+			regdtag.classList.add("des")
+
+			const p1 = document.createElement("p")
+			const complaintregd = document.createTextNode("Complaint Regarding: " + childUserData.complaintRegarding)
+			p1.appendChild(complaintregd)
+			regdtag.appendChild(p1)
+
+			const p2 = document.createElement("p")
+			const complaintdesc = document.createTextNode("Complaint Description: " + childUserData.complaintDescription)
+			p2.appendChild(complaintdesc)
+			regdtag.appendChild(p2)
+
+
+			cardtag.appendChild(regdtag)
+
+			maintag.appendChild(cardtag )
+		});
+
+
+	});
+}
+
+window.addEventListener("load",generateComplaints);
+
+
+</script>
+
+
+
+<div class="container">
+      <a href="index.html" class="btn">BACK</a>
+    </div>
+</body>
+</html>
